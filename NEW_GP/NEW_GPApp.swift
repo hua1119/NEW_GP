@@ -6,15 +6,25 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 @main
+
 struct NEW_GPApp: App {
     let persistenceController = PersistenceController.shared
-
+    @AppStorage("colorScheme") private var colorScheme: Bool = true
+    init()
+    {
+        FirebaseApp.configure()
+        // 執行移除 "colorScheme" 鍵的操作
+        UserDefaults.standard.removeObject(forKey: "colorScheme")
+    }
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            SiginView()
+                .preferredColorScheme(self.colorScheme ? .light:.dark)
+//            DataBaseExample()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
